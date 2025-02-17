@@ -1,0 +1,25 @@
+任务：
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_show.php?id=36   FZYZOJ模板题汇总
+
+https://internal.fzyzoi.tk/Chinglun/   福州一中信息组论文归档系统
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_show.php?id=33   FZYZ OI 2019 暑假训练——图论及网络流
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_show.php?id=32   FZYZ OI 2019 暑假训练——数据结构模块
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_show.php?id=30   FZYZ OI 2019 暑假训练——数学模块
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_show.php?id=29   FZYZ OI 2019 暑假训练——基础算法和字符串模块
+
+https://internal.fzyzoi.tk/OnlineJudge/discuss_discuss.php?did=18   关于程序调试手段与需检查的常见错误的讨论【常见锅及规避】
+
+/***********************************************************************************************************************************/
+
+帮助：
+
+https://oiwiki.org/   【 OI Wiki 】
+
+https://internal.fzyzoi.tk/OnlineJudge/tag_list.php   【 FZYZOJ 题目分类 】
+
+https://www.luogu.com.cn/   【 洛谷 】
