@@ -141,7 +141,10 @@ public:
 			else
 				return 1;
 		}else{
-			return cur.wcnt+lsiz+query_rank_by_val(cur.rch,val);
+			if(cur.rch)
+				return cur.wcnt+lsiz+query_rank_by_val(cur.rch,val);
+			else
+				return cur.siz+1;
 		}
 	}
 	
@@ -212,9 +215,9 @@ void solve(){
 		else
 			cout<<treap.query_nxt(x)<<endl;
 		
-		cout<<"!!! 1 "<<treap.node[1].lch<<' '<<treap.node[1].rch<<endl;
-		cout<<"!!! 2 "<<treap.node[2].lch<<' '<<treap.node[2].rch<<endl;
-		cout<<"!!! 3 "<<treap.node[3].lch<<' '<<treap.node[3].rch<<endl;
+//		cout<<"!!! 1 "<<treap.node[1].lch<<' '<<treap.node[1].rch<<endl;
+//		cout<<"!!! 2 "<<treap.node[2].lch<<' '<<treap.node[2].rch<<endl;
+//		cout<<"!!! 3 "<<treap.node[3].lch<<' '<<treap.node[3].rch<<endl;
 	}
 }
 
