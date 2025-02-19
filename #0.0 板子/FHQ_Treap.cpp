@@ -40,10 +40,10 @@ public:
 		}
 	};
 	
-	Node *rt;
+	Node *root;
 	
 	H_FHQ_Treap(){
-		rt=nullptr;
+		root=nullptr;
 	}
 	
 	pair<Node*,Node*> split_by_val(Node *pos,ll key){
@@ -71,14 +71,14 @@ public:
 			pos->Calc();
 			return {l,mid,pos};
 		}
-		else if(rk<=lsiz+pos->siz){
+		else if(rk<=lsiz+pos->wcnt){
 			auto ls=pos->lch,rs=pos->rch;
 			pos->lch=nullptr;
 			pos->rch=nullptr;
 			return {ls,pos,rs};
 		}
 		else{
-			auto[l,mid,r]=split_by_rank(pos->rch,rk);
+			auto[l,mid,r]=split_by_rank(pos->rch,rk-lsiz-pos->wcnt);
 			pos->rch=l;
 			pos->Calc();
 			return {pos,mid,r};
@@ -102,8 +102,8 @@ public:
 		}
 	}
 	
-	void insert(Node *pos,ll val){
-		auto [ls,rs]=split_by_val(rt,val);
+	void insert(ll val){
+		auto [ls,rs]=split_by_val(root,val);
 		auto [lls,lrs]=split_by_val(ls,val-1);
 		Node *new_node;
 		if(lrs==nullptr){
@@ -113,13 +113,85 @@ public:
 			lrs->wcnt++;
 			lrs->Calc();
 		}
-		rt=merge(merge(lls,lrs==nullptr?new_node:lrs),rs);
+		root=merge(merge(lls,lrs==nullptr?new_node:lrs),rs);
 	}
 	
+	void del(ll val){
+		auto [ls,rs]=split_by_val(root,val);
+		auto [lls,lrs]=split_by_val(ls,val-1);
+		if(lrs->wcnt>1){
+			lrs->wcnt--;
+			lrs->siz--;
+			lls=merge(lls,lrs);
+		}else{
+			if(ls==lrs)
+				ls=nullptr;
+			delete lrs;
+			lrs=nullptr;
+		}
+		root=merge(lls,rs);
+	}
+	
+	ll query_rank_by_val(Node *pos,ll val){
+		auto [ls,rs]=split_by_val(pos,val-1);
+		ll res=(ls==nullptr?0:ls->siz)+1;
+		root=merge(ls,rs);
+		return res;
+	}
+	
+	ll query_val_by_rank(Node *pos,ll rk){
+		auto [l,mid,r]=split_by_rank(pos,rk);
+		ll res=mid->val;
+		root=merge(merge(l,mid),r);
+		return res;
+	}
+	
+	ll query_prev(ll val){
+		auto [ls,rs]=split_by_val(root,val-1);
+		ll res=query_val_by_rank(ls,ls->siz);
+		root=merge(ls,rs);
+		return res;
+	}
+	
+	ll query_nxt(ll val){
+		auto [ls,rs]=split_by_val(root,val);
+		ll res=query_val_by_rank(rs,1);
+		root=merge(ls,rs);
+		return res;
+	}
 };
 
 void solve(){
-	
+	ll n,m,ans=0,last=0;
+		cin>>n>>m;
+		H_FHQ_Treap treap=H_FHQ_Treap();
+		for(ll i=1;i<=n;i++){
+			ll x;
+			cin>>x;
+			treap.insert(x);
+		}
+		for(ll i=1;i<=m;i++){
+			ll op,x;
+			cin>>op>>x;
+			if(op==1)
+				treap.insert(x^last);
+			else if(op==2)
+				treap.del(x^last);
+			else if(op==3)
+				ans^=last=treap.query_rank_by_val(treap.root,x^last);
+			else if(op==4)
+				ans^=last=treap.query_val_by_rank(treap.root,x^last);
+			else if(op==5)
+				ans^=last=treap.query_prev(x^last);
+			else
+				ans^=last=treap.query_nxt(x^last);
+			
+//		cout<<"!!! 1 "<<treap.node[1].lch<<' '<<treap.node[1].rch<<endl;
+//		cout<<"!!! 2 "<<treap.node[2].lch<<' '<<treap.node[2].rch<<endl;
+//		cout<<"!!! 3 "<<treap.node[3].lch<<' '<<treap.node[3].rch<<endl;
+		}
+//	OOO
+		cout<<ans<<endl;
 }
 
 int main() {
@@ -127,7 +199,7 @@ int main() {
 	cin.tie( 0 );
 	cout.tie( 0 );
 	
-	cin >> tt;	//非多组测试数据时注释掉即可
+//	cin >> tt;	//非多组测试数据时注释掉即可
 	
 	while ( tt-- ) {
 		solve();
