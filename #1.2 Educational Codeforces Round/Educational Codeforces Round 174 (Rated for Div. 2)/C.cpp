@@ -24,12 +24,9 @@ void solve(){
 	vector<ll> v(n+1);
 	for(ll i=1;i<=n;i++) cin>>v[i];
 	
-	vector<ll> cnt1(n+2),cnt2(n+2),cnt3(n+2),cnt(n+2);
-	for(ll i=1;i<=n;i++){
+	vector<ll> cnt1(n+2);
+	for(ll i=1;i<=n;i++)
 		cnt1[i]=cnt1[i-1]+(v[i]==1?1:0);
-		cnt2[i]=cnt2[i-1]+(v[i]==2?1:0);
-		cnt3[i]=cnt3[i-1]+(v[i]==3?1:0);
-	}
 	
 	ll ans=0,tmp=0;
 	for(ll i=1;i<=n;i++){
@@ -45,8 +42,6 @@ void solve(){
 //	OOO
 	
 	cout<<(ans%Mod+Mod)%Mod<<endl;
-	
-	
 }
 
 int main() {
