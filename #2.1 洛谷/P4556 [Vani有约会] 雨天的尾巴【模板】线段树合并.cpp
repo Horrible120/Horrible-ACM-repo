@@ -107,7 +107,7 @@ private:
 void solve(){
 	ll n,m;
 	cin>>n>>m;
-	H_Val_Segment_Tree sgm((n+m+1)*40,1,1e5);
+	H_Val_Segment_Tree sgm((m+1)*16*4,1,1e5);
 	vector<ll> ans(n+1),eg[n+1],rt(n+1),dep(n+1);	//答案 邻接表 每个房屋对应的根节点 深度
 	v2ct<ll> fa(21,vector<ll>(n+1));
 	for(ll i=1;i<n;i++){
