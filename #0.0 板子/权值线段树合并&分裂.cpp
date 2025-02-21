@@ -46,6 +46,65 @@ public:
 		
 	}
 	
+	void add_vals(ll &rt,ll x,ll key){	//向以 rt 号节点为根的树内一次 x 个值 key
+		_add_vals(rt,low,top,x,key);
+	}
+	
+	void tree_merge(ll &new_rt,ll a_rt,ll b_rt){	//将编号为 a 和 b 的两棵树合并为一棵树，新树根节点编号为 rt
+		/*
+		有一个可能存在的问题:如果我要把合并之后的树存到原来的某棵树的位置，会不会在合并的过程中出现问题？
+		>> 一个显而易见的解决方法是先选一个 tmp 作为新根节点，在合并完成后将原来某一颗树的根节点改为 tmp 无非多一点点空间
+		>> 但是能不能解决或者说明这样做不会有问题呢？
+		*/
+		_tree_merge(new_rt,a_rt,b_rt,top,low);
+	}
+	
+private:
+	
+	void _add_vals(ll &u,ll l,ll r,ll x,ll key){	//本质上是 u 子树内的 key 位置修改 x	
+		if(!u) u=++tot;
+		
+		Node &cur=node[u];
+		
+		if(l==r){	//叶子节点的修改操作
+			cur.siz+=x;
+			return;
+		}
+		
+		ll mid=l+r>>1;
+		if(key<=mid)
+			_add_vals(cur.lch,l,mid,x,key);
+		else
+			_add_vals(cur.rch,mid+1,r,x,key);
+		update(u);
+	}
+	
+	Node _node_merge(Node &a,Node &b){
+		Node res=Node();
+		res.siz=a.siz+b.siz;
+		return res;
+	}
+	
+	void _tree_merge(ll &u,ll a,ll b,ll l,ll r){	//将 a&b 节点合并，新节点为 u
+		if(!a||!b){
+			u=a+b;
+			return;
+		}
+		
+		if(!u) u=++tot;
+		Node &cur=node[u],&na=node[a],&nb=node[b];
+		
+		if(l==r){	//叶节点的合并
+			node[u]=_node_merge(na,nb);
+			return;
+		}
+		
+		ll mid=l+r>>1;
+		_tree_merge(cur.lch,na.lch,nb.lch,l,mid);
+		_tree_merge(cur.rch,na.rch,nb.rch,mid+1,r);
+		update(u);
+	}
+	
 };
 
 void solve(){
