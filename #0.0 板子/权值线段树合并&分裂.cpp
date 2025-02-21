@@ -5,7 +5,7 @@ using namespace std;
 using namespace __gnu_pbds;
 
 mt19937_64 rnd( time( 0 ) );
-typedef int ll;
+typedef long long ll;
 typedef uint64_t ull;
 template <typename T> using vct = vector<T>;
 template <typename T> using v2ct = vector<vector<T>>;
@@ -24,7 +24,7 @@ public:
 	public:
 		ll lch,rch,siz;
 		
-		Node()=default;	//无意义构造函数
+		Node():lch(0),rch(0),siz(0){};	//无意义构造函数
 		Node(ll x):lch(),rch(),siz(x){	//有意义的构造函数
 			
 		}	
@@ -42,8 +42,7 @@ public:
 	
 	void update(ll u){	//由子节点更新父节点信息
 		Node &cur=node[u];
-		cur.siz=(cur.lch?node[cur.lch].siz:0)+(cur.rch?node[cur.lch].siz:0);
-		
+		cur.siz=(cur.lch?node[cur.lch].siz:0)+(cur.rch?node[cur.rch].siz:0);
 	}
 	
 	void add_vals(ll &rt,ll x,ll key){	//向以 rt 号节点为根的树内一次 x 个值 key
@@ -56,18 +55,18 @@ public:
 		>> 一个显而易见的解决方法是先选一个 tmp 作为新根节点，在合并完成后将原来某一颗树的根节点改为 tmp 无非多一点点空间
 		>> 但是能不能解决或者说明这样做不会有问题呢？
 		*/
-		_tree_merge(new_rt,a_rt,b_rt,top,low);
+		_tree_merge(new_rt,a_rt,b_rt,low,top);
 	}
 	
 	void tree_split(ll &new_rt,ll &past_rt,ll s,ll t){	//将 past_rt 中 [s,t] 的数值全部分裂出去到 new_rt 中
 		_tree_split(new_rt,past_rt,s,t,low,top);
 	}
 	
-	ll query_siz(ll rt,ll s,ll t){
+	ll query_siz(ll rt,ll s,ll t){	//查询 rt 中 [s,t] 区间的数的数量
 		return _query_siz(rt,s,t,low,top);
 	}
 	
-	ll query_kth(ll rt,ll k){
+	ll query_kth(ll rt,ll k){	//查询 rt 中的第 k 小
 		return _query_kth(rt,low,top,k);
 	}
 	
@@ -91,7 +90,7 @@ private:
 		update(u);
 	}
 	
-	Node _node_merge(Node &a,Node &b){
+	Node _node_merge(Node &a,Node &b){	//返回 a&b 两个节点合并后的节点，这样可以保证先完成全部计算后再改变引用的值
 		Node res=Node();
 		res.siz=a.siz+b.siz;
 		return res;
@@ -117,7 +116,7 @@ private:
 		update(u);
 	}
 	
-	void _tree_split(ll &u,ll &v,ll s,ll t,ll l,ll r){
+	void _tree_split(ll &u,ll &v,ll s,ll t,ll l,ll r){	//线段树的分裂
 		if(l>t||r<s) return;
 		if(!v) return;
 		
@@ -146,17 +145,20 @@ private:
 		
 		ll mid=l+r>>1;
 		
-		if(s<=mid&&t>mid) return _query_siz(node[u].lch,s,t,l,mid)+
-								_query_siz(node[u].rch,s,t,mid+1,r);
-		else if(s<=mid) return _query_siz(node[u].lch,s,t,l,mid);
-		else if(t>mid) return _query_siz(node[u].rch,s,t,mid+1,r);
+		if(s<=mid&&t>mid) return _query_siz(cur.lch,s,t,l,mid)+
+								_query_siz(cur.rch,s,t,mid+1,r);
+		else if(s<=mid) return _query_siz(cur.lch,s,t,l,mid);
+		else if(t>mid) return _query_siz(cur.rch,s,t,mid+1,r);
 	}
 	
 	ll _query_kth(ll u,ll l,ll r,ll k){
+		Node &cur=node[u];
+		
+		if(cur.siz<k) return -1;
+		
 		if(l==r)
 			return l;
 		
-		Node &cur=node[u];
 		ll mid=l+r>>1;
 		
 		if(k<=node[cur.lch].siz)
@@ -171,7 +173,7 @@ void solve(){
 	ll n,m,tot=1;
 	cin>>n>>m;
 	vector<ll> rt(n+m+1);
-	H_Val_Segment_Tree sgm((n+1)*2*18,1,n);
+	H_Val_Segment_Tree sgm((n+1)*18,1,n);
 	for(ll i=1;i<=n;i++){
 		ll x;
 		cin>>x;
