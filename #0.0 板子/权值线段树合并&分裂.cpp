@@ -5,7 +5,7 @@ using namespace std;
 using namespace __gnu_pbds;
 
 mt19937_64 rnd( time( 0 ) );
-typedef long long ll;
+typedef int ll;
 typedef uint64_t ull;
 template <typename T> using vct = vector<T>;
 template <typename T> using v2ct = vector<vector<T>>;
@@ -60,7 +60,15 @@ public:
 	}
 	
 	void tree_split(ll &new_rt,ll &past_rt,ll s,ll t){	//将 past_rt 中 [s,t] 的数值全部分裂出去到 new_rt 中
-		
+		_tree_split(new_rt,past_rt,s,t,low,top);
+	}
+	
+	ll query_siz(ll rt,ll s,ll t){
+		return _query_siz(rt,s,t,low,top);
+	}
+	
+	ll query_kth(ll rt,ll k){
+		return _query_kth(rt,low,top,k);
 	}
 	
 private:
@@ -127,10 +135,72 @@ private:
 		update(v);
 	}
 	
+	ll _query_siz(ll u,ll s,ll t,ll l,ll r){
+		if(l>t||r<s) return 0;
+		if(!u) return 0;
+		
+		Node &cur=node[u];
+		
+		if(s<=l&&t>=r)
+			return cur.siz;
+		
+		ll mid=l+r>>1;
+		
+		if(s<=mid&&t>mid) return _query_siz(node[u].lch,s,t,l,mid)+
+								_query_siz(node[u].rch,s,t,mid+1,r);
+		else if(s<=mid) return _query_siz(node[u].lch,s,t,l,mid);
+		else if(t>mid) return _query_siz(node[u].rch,s,t,mid+1,r);
+	}
+	
+	ll _query_kth(ll u,ll l,ll r,ll k){
+		if(l==r)
+			return l;
+		
+		Node &cur=node[u];
+		ll mid=l+r>>1;
+		
+		if(k<=node[cur.lch].siz)
+			return _query_kth(cur.lch,l,mid,k);
+		else
+			return _query_kth(cur.rch,mid+1,r,k-node[cur.lch].siz);
+	}
+	
 };
 
 void solve(){
-	
+	ll n,m,tot=1;
+	cin>>n>>m;
+	vector<ll> rt(n+m+1);
+	H_Val_Segment_Tree sgm((n+1)*2*18,1,n);
+	for(ll i=1;i<=n;i++){
+		ll x;
+		cin>>x;
+		sgm.add_vals(rt[1],x,i);
+	}
+	for(ll i=1;i<=m;i++){
+		ll op,p,t,x,q,y,k;
+		cin>>op;
+		if(op==0){
+			cin>>p>>x>>y;
+			sgm.tree_split(rt[++tot],rt[p],x,y);
+		}
+		if(op==1){
+			cin>>p>>t;
+			sgm.tree_merge(rt[p],rt[p],rt[t]);
+		}
+		if(op==2){
+			cin>>p>>x>>q;
+			sgm.add_vals(rt[p],x,q);
+		}
+		if(op==3){
+			cin>>p>>x>>y;
+			cout<<sgm.query_siz(rt[p],x,y)<<endl;
+		}
+		if(op==4){
+			cin>>p>>k;
+			cout<<sgm.query_kth(rt[p],k)<<endl;
+		}
+	}
 }
 
 int main() {
@@ -138,7 +208,7 @@ int main() {
 	cin.tie( 0 );
 	cout.tie( 0 );
 	
-	cin >> tt;	//非多组测试数据时注释掉即可
+//	cin >> tt;	//非多组测试数据时注释掉即可
 	
 	while ( tt-- ) {
 		solve();
