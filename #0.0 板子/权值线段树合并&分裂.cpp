@@ -50,13 +50,17 @@ public:
 		_add_vals(rt,low,top,x,key);
 	}
 	
-	void tree_merge(ll &new_rt,ll a_rt,ll b_rt){	//将编号为 a 和 b 的两棵树合并为一棵树，新树根节点编号为 rt
+	void tree_merge(ll &new_rt,ll a_rt,ll b_rt){//将编号为 a_rt 和 b_rt 的两棵树合并为一棵树，新树根节点编号为 new_rt
 		/*
 		有一个可能存在的问题:如果我要把合并之后的树存到原来的某棵树的位置，会不会在合并的过程中出现问题？
 		>> 一个显而易见的解决方法是先选一个 tmp 作为新根节点，在合并完成后将原来某一颗树的根节点改为 tmp 无非多一点点空间
 		>> 但是能不能解决或者说明这样做不会有问题呢？
 		*/
 		_tree_merge(new_rt,a_rt,b_rt,top,low);
+	}
+	
+	void tree_split(ll &new_rt,ll &past_rt,ll s,ll t){	//将 past_rt 中 [s,t] 的数值全部分裂出去到 new_rt 中
+		
 	}
 	
 private:
@@ -103,6 +107,24 @@ private:
 		_tree_merge(cur.lch,na.lch,nb.lch,l,mid);
 		_tree_merge(cur.rch,na.rch,nb.rch,mid+1,r);
 		update(u);
+	}
+	
+	void _tree_split(ll &u,ll &v,ll s,ll t,ll l,ll r){
+		if(l>t||r<s) return;
+		if(!v) return;
+		
+		if(s<=l&&t>=r){	//把完整的一的节点分裂出去
+			u=v;
+			v=0;
+			return;
+		}
+		
+		if(!u) u=++tot;
+		ll mid=l+r>>1;
+		if(s<=mid) _tree_split(node[u].lch,node[v].lch,s,t,l,mid);
+		if(t>mid) _tree_split(node[u].rch,node[v].rch,s,t,mid+1,r);
+		update(u);
+		update(v);
 	}
 	
 };
