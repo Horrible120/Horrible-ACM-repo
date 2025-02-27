@@ -33,8 +33,6 @@ ll sol1(ll n,ll p){
 	return res;
 }
 
-
-
 void solve(){
 	ll n,k,ans=0;
 	cin>>n>>k;
