@@ -152,8 +152,9 @@ public:
 	class Node{
 	public:
 		ll hson,fa,dep,siz;
-		ll top,dfn;
-		Node()=default;
+		ll top,dfn,btm;
+		ll val;
+		Node():dep(0),fa(0),hson(0),siz(0),top(0),dfn(0),btm(0),val(0){};
 	};
 	
 	ll n,dfn_tot;
@@ -182,7 +183,7 @@ public:
 				node[v].fa=cur;
 				HLD_dfs_1(v);
 				u.siz+=node[v].siz;
-				if(~u.hson||node[v].siz>node[u.hson].siz)
+				if(u.hson==-1||node[v].siz>node[u.hson].siz)
 					u.hson=v;
 			}
 		}
@@ -191,9 +192,9 @@ public:
 	void HLD_dfs_2(ll cur,ll top){
 		Node &u=node[cur];
 		u.top=top;
-		u.dfn=++dfn_tot;
+		u.btm=u.dfn=++dfn_tot;
 		rnk[dfn_tot]=cur;
-		if(~u.hson)
+		if(u.hson==-1)
 			return;
 		else
 			HLD_dfs_2(u.hson,top);
@@ -201,6 +202,7 @@ public:
 			if(v!=u.hson&&v!=u.fa)
 				HLD_dfs_2(v,v);
 		}
+		u.btm=dfn_tot;
 	}
 	
 	void HLD_init(ll rt){
@@ -222,6 +224,23 @@ public:
 		if(node[x].dfn>node[y].dfn)
 			swap(x,y);
 		sgm.modify(node[x].dfn,node[y].dfn,tag);
+	}
+	
+	template<typename T>
+	ll tree_path_query(ll x,ll y,Segment_tree<T> &sgm){
+		ll x_top=node[x].top,y_top=node[y].top;
+		ll res=0;
+		while(x_top!=y_top){
+			if(node[x_top].dep<node[y_top].dep)
+				swap(x,y),swap(x_top,y_top);
+//			res+=sgm.query(node[x_top].dfn,node[x].dfn).val_sum;
+			x=node[x_top].fa;
+			x_top=node[x].top;
+		}
+		if(node[x].dfn>node[y].dfn)
+			swap(x,y);
+//		res+=sgm.query(node[x].dfn,node[y].dfn).val_sum;
+		return res%Mod;
 	}
 };
 
