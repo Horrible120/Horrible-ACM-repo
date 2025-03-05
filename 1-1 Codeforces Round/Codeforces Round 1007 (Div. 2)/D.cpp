@@ -43,6 +43,7 @@ void solve(){
 		}
 	};
 	
+//	println("{}",sol(l));
 	cout<<sol(l)<<endl;
 }
 
