@@ -17,11 +17,11 @@ template <typename T> using vct = vector<T>;
 template <typename T> using v2ct = vector<vector<T>>;
 template <typename T> using v3ct = vector<vector<vector<T>>>;
 
-
 const ll INF = 4e18, Mod = 1e9+7;
 mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 
 ll tt=1;
+ll cnt=1;
 
 template <typename T>
 class H_bigragh{
@@ -95,17 +95,17 @@ public:
 };
 
 void solve(){
+	
 	ll n;
 	cin>>n;
 	H_bigragh<ll> bgh(n);
-	for(ll i=1;i<=n;i++){
+	for(ll i=1;i<=n;i++)
 		for(ll j=1;j<=n;j++){
 			ll x;
 			cin>>x;
 			bgh.w[i][j]=-x;
 		}
-	}
-	cout<<-bgh.KM()<<endl;
+	cout<<"Case #"<<cnt++<<": "<<-bgh.KM()<<endl;
 }
 
 int main() {

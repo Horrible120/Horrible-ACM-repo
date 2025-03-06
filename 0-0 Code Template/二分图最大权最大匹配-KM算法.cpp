@@ -60,8 +60,8 @@ public:
 			for(ll v=0;v<=n;v++)	//调整可行顶标
 				if(visb[v])
 					la[matchb[v]]-=delta,lb[v]+=delta;
-			else
-				slack[v]-=delta;
+				else
+					slack[v]-=delta;
 			y=y1;	//拓展交错树至y1 更新y
 		}while(matchb[y]);	//如果还未拓展到某个未匹配节点
 		
