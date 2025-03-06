@@ -20,18 +20,18 @@ mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 ll tt=1;
 
 template<typename T>
-class H_Fenwick{
+class H_Fenwick{	//树状数组 类
 public:
-	ll n;
-	vector<T> val;
+	ll n;	//总的元素个数
+	vector<T> val;	//储存树状数组的数据
 	
-	H_Fenwick(ll _n):n(_n){
+	H_Fenwick(ll _n):n(_n){	// n 个元素的初始化
 		val.assign(n+1,0);
 	}
 	
-	ll lb(ll x) {return x&-x;}
+	ll lb(ll x) {return x&-x;}	//求 lowbit
 	
-	T query_Prefsum(ll x){
+	T query_Prefsum(ll x){	//求前缀和
 		T res=0;
 		while(x){
 			res+=val[x];
@@ -40,11 +40,11 @@ public:
 		return res;
 	}
 	
-	T query_Rangesum(ll l,ll r){
+	T query_Rangesum(ll l,ll r){	//用前缀和求区间和
 		return query_Prefsum(r)-query_Prefsum(l-1);
 	}
 	
-	void val_add(ll pos,T key){
+	void val_add(ll pos,T key){	//单点修改: 加上key
 		while(pos<=n){
 			val[pos]+=key;
 			pos+=lb(pos);
@@ -52,7 +52,7 @@ public:
 	}
 	
 	void val_modify(ll pos,T key){
-		val_add(pos,key-query_Rangesum(pos,pos));
+		val_add(pos,key-query_Rangesum(pos,pos));	//单点修改: 改为key
 	}
 };
 
