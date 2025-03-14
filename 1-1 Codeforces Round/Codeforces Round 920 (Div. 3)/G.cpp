@@ -1,5 +1,5 @@
 #include <bits/extc++.h>
-#define OOO print(">>>>");	//调试标识
+#define OOO cout<<">>>>";	//调试标识
 #define H_test(x) println("---> {} <---",x);	//调试输出
 
 using namespace std;
@@ -31,7 +31,7 @@ void solve(){
 	}
 	
 	v2ct<ll> a=v;
-	v2ct<ll> pre(n+1,vector<ll>(m+1,0)),pres(n+1,vector<ll>(m+1,0));
+	v2ct<ll> pre(n+1,vector<ll>(m+1,0)),pres(n+1,vector<ll>(m+2,0));
 	auto row=[&](ll i,ll j){
 		return pre[i][min(m,j)];
 	};
@@ -46,7 +46,7 @@ void solve(){
 	
 	{
 		pre=v2ct<ll>(n+1,vector<ll>(m+1,0));
-		pres=v2ct<ll>(n+1,vector<ll>(m+1,0));
+		pres=v2ct<ll>(n+1,vector<ll>(m+2,0));
 		v2ct<ll> ans(n+1,vector<ll>(m+1,0));
 		for(ll i=1;i<=n;i++)
 			for(ll j=1;j<=m;j++)
@@ -60,6 +60,20 @@ void solve(){
 		for(ll i=1;i<=m;i++)
 			for(ll j=2;j<=n;j++)
 				ans[j][i]=ans[j-1][i]-(row(j-1,i+k)-row(j-1,i-1))+prs(j+k,i)-prs(j-1,i+k+1);
+//		
+//		OOO cout<<endl;
+//		for(ll i=1;i<=n;i++){
+//			for(ll j=1;j<=m;j++)
+//				cout<<a[i][j]<<' ';
+//			cout<<endl;
+//		}
+//		OOO cout<<endl;
+//		for(ll i=1;i<=n;i++){
+//			for(ll j=1;j<=m;j++)
+//				cout<<pres[i][j]<<' ';
+//			cout<<endl;
+//		}
+//			
 		for(ll i=1;i<=n;i++)
 			for(ll j=1;j<=m;j++)
 				mx=max(mx,ans[i][j]);
@@ -69,8 +83,8 @@ void solve(){
 		for(ll j=1;j<=m;j++)
 			a[i][j]=v[i][m-j+1];
 	{
-		pre=v2ct<ll>(n+1,vector<ll>(m+1,0));
-		pres=v2ct<ll>(n+1,vector<ll>(m+1,0));
+		pre=v2ct<ll>(n+1,vector<ll>(m+2,0));
+		pres=v2ct<ll>(n+1,vector<ll>(m+2,0));
 		v2ct<ll> ans(n+1,vector<ll>(m+1,0));
 		for(ll i=1;i<=n;i++)
 			for(ll j=1;j<=m;j++)
@@ -93,8 +107,8 @@ void solve(){
 		for(ll j=1;j<=m;j++)
 			a[i][j]=v[n-i+1][j];
 	{
-		pre=v2ct<ll>(n+1,vector<ll>(m+1,0));
-		pres=v2ct<ll>(n+1,vector<ll>(m+1,0));
+		pre=v2ct<ll>(n+1,vector<ll>(m+2,0));
+		pres=v2ct<ll>(n+1,vector<ll>(m+2,0));
 		v2ct<ll> ans(n+1,vector<ll>(m+1,0));
 		for(ll i=1;i<=n;i++)
 			for(ll j=1;j<=m;j++)
@@ -117,8 +131,8 @@ void solve(){
 		for(ll j=1;j<=m;j++)
 			a[i][j]=v[n-i+1][m-j+1];
 	{
-		pre=v2ct<ll>(n+1,vector<ll>(m+1,0));
-		pres=v2ct<ll>(n+1,vector<ll>(m+1,0));
+		pre=v2ct<ll>(n+1,vector<ll>(m+2,0));
+		pres=v2ct<ll>(n+1,vector<ll>(m+2,0));
 		v2ct<ll> ans(n+1,vector<ll>(m+1,0));
 		for(ll i=1;i<=n;i++)
 			for(ll j=1;j<=m;j++)
@@ -136,7 +150,7 @@ void solve(){
 			for(ll j=1;j<=m;j++)
 				mx=max(mx,ans[i][j]);
 	}
-	
+//	OOO
 	cout<<mx<<endl;
 }
 
