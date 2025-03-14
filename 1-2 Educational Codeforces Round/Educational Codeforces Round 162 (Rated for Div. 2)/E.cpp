@@ -21,8 +21,10 @@ ll tt=1;
 void solve(){
 	ll n,ans=0;
 	cin>>n;
-	vector<ll> v(n+1),vis(n+1,0),col(n+1,0);
+	vector<ll> v(n+1),vis(n+1,0);
 	v2ct<ll> eg(n+1,vector<ll>());
+	vector<map<ll,ll>> cnt(n+1,map<ll,ll>());
+	
 	for(ll i=1;i<=n;i++){
 		ll x;
 		cin>>v[i];
@@ -33,14 +35,27 @@ void solve(){
 		eg[u].emplace_back(x);
 		eg[x].emplace_back(u);
 	}
-	function<void(ll)> DFS=[&](ll u){
-		vis[u]=++col[v[u]];
-		for(auto v:eg[u])
-			if(!vis[v])
-				DFS(v);
-		ll ct=col[v[u]]-vis[u];
-		ans+=ct*(ct+1)/2;
+	
+	auto merge=[&](ll x,ll y)->void{
+		if(cnt[x].size()<cnt[y].size())
+			swap(cnt[x],cnt[y]);
+		for(auto [u,ct]:cnt[y]){
+			if(u!=v[x]) ans+=cnt[x][u]*ct;
+			cnt[x][u]+=ct;
+		}
 	};
+	
+	function<void(ll)> DFS=[&](ll u){
+		vis[u]=1;
+		for(auto v:eg[u])
+			if(!vis[v]){
+				DFS(v);
+				merge(u,v);
+			}
+		ans+=cnt[u][v[u]];
+		cnt[u][v[u]]=1;
+	};
+	
 	DFS(1);
 //	OOO
 	cout<<ans<<endl;
