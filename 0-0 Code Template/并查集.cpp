@@ -49,7 +49,6 @@ int main() {
 	ios::sync_with_stdio( 0 );
 	cin.tie( 0 );
 	cout.tie( 0 );
-	
 	cin >> tt;	//非多组测试数据时注释掉即可
 	
 	while ( tt-- ) {

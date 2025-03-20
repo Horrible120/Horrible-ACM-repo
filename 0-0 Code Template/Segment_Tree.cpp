@@ -21,7 +21,7 @@ ll tt=1;
 /********************************************************************************************/
 
 template <typename T>
-class Segment_tree{
+class H_Segment_tree{
 public:
 	class Tag{	//修改标记类
 	public:
@@ -73,7 +73,7 @@ public:
 	
 	// 用 vals 构造线段树 vals 是支持下标访问的容器对象, 例如 std::vector<T>.
 	template<typename V>
-	Segment_tree(ll _n,const V &vals):n(_n),info(4*n+1,Info()),tag(4*n+1,Tag()){
+	H_Segment_tree(ll _n,const V &vals):n(_n),info(4*n+1,Info()),tag(4*n+1,Tag()){
 		build_tree(1,1,n,vals);
 	}
 	
