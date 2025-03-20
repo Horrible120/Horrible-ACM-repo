@@ -18,7 +18,7 @@ const ll INF = 4e18, Mod = 998244353;
 mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 
 ll tt=1;
-ll fct[2000010],iv[2000010];
+ll fct[2000010]={},iv[2000010]={};
 
 void exgcd(ll a,ll b,ll& d,ll& x,ll& y){
 	if(!b) { d = a; x = 1; y = 0; }
@@ -31,31 +31,38 @@ ll inv(ll a){
 }
 void init(){
 	fct[0]=1;
-	for(ll i=1;i<=2e6;i++)
+	iv[0]=1;
+	for(ll i=1;i<=2000000;i++)
 		fct[i]=fct[i-1]*i%Mod;
-	for(ll i=1;i<=2e6;i++)
+	for(ll i=1;i<=1000000;i++)
 		iv[i]=inv(fct[i]);
 }
 
 ll Calc(ll n,ll m){
+	if(n==0) return 1;
 //	cout<<n<<' '<<m<<endl;
+//	cout<<"!!!"<<fct[m+n-1]*(iv[m]*iv[n-1]%Mod)%Mod<<endl;
 	return fct[m+n-1]*(iv[m]*iv[n-1]%Mod)%Mod;
 }
 
 void solve(){
-	vector<ll> c(5,0);
+	ll c[5]={};
 	for(ll i=1;i<=4;i++)
 		cin>>c[i];
-	OOO
-	cout<<Calc(2,2)<<endl;
-	if(abs(c[1]-c[2])>1){
+//	cout<<c[1]<<' '<<c[2]<<endl;
+//	OOO
+//	cout<<Calc(100,2)<<endl;
+	if(abs(c[1]-c[2])>1||((c[1]|c[2])==0&&c[3]>0&&c[4]>0)){
 		cout<<0<<endl;
 	}
+	else if((c[1]|c[2])==0&&c[3]*c[4]==0){
+		cout<<1<<endl;
+	}
 	else if(c[1]!=c[2]){
-		cout<<Calc(min(c[1],c[2]),c[3])*Calc(min(c[1],c[2]),c[4])%Mod<<endl;
+		cout<<Calc(max(c[1],c[2]),c[3])*Calc(max(c[1],c[2]),c[4])%Mod<<endl;
 	}
 	else{
-		cout<<(Calc(c[1],c[3])*Calc(c[1]-1,c[4])+Calc(c[1]-1,c[3])*Calc(c[1],c[4]))%Mod<<endl;
+		cout<<(Calc(c[1],c[3])*Calc(c[1]+1,c[4])+Calc(c[1]+1,c[3])*Calc(c[1],c[4]))%Mod<<endl;
 	}
 }
 
@@ -64,7 +71,7 @@ int main() {
 	cin.tie( 0 );
 	cout.tie( 0 );
 	init();
-	cout<<fct[5]<<' '<<iv[3]<<endl;
+//	cout<<fct[5]<<' '<<iv[3]<<endl;
 	cin >> tt;	//非多组测试数据时注释掉即可
 	
 	while ( tt-- ) {
