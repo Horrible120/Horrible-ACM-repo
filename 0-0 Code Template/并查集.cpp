@@ -22,23 +22,48 @@ ll tt=1;
 class H_Dsu{
 public:
 	ll n;
-	vector<ll> fa,siz;
+	
+	class Info{
+	public:
+		ll fa,siz;
+		// $$$ 其他信息自行添加
+		
+		Info()=default;	//无效Info初始化
+		
+		Info(ll _fa):fa(_fa){}	//有效初始化
+		
+		friend Info operator+(const Info &a,const Info &b){
+			Info res;
+			// $$$ Info合并(只可对集合的根节点操作)
+			res.fa=a.fa;	//父亲不变
+			res.siz=a.siz+b.siz;
+			
+			return res;
+		}
+	};
+	
+	vector<Info> v;
+	
 	H_Dsu(ll _n):n(_n){
-		fa.assign(n+1,0);
+		v.assign(n+1,Info());
 		for(ll i=1;i<=n;i++)
-			fa[i]=i;
-		siz.assign(n+1,1);
+			v[i].fa=i;
 	}
+	
 	ll Fa(ll x){
-		if(fa[x]==x) return x;
-		else return fa[x]=Fa(fa[x]);
+		if(v[x].fa==x) return x;
+		return v[x].fa=Fa(v[x].fa);
 	}
+	
 	void merge(ll x,ll y){ //y向x合并
 		ll fx=Fa(x),fy=Fa(y);
 		if(fx==fy) return;
-		siz[fx]+=siz[fy];
-		fa[fy]=fx;
+		if(v[fx].siz<v[fy].siz)
+			swap(fx,fy);
+		v[fy].fa=fx;
+		v[fx]=v[fx]+v[fy];
 	}
+	
 };
 
 void solve(){

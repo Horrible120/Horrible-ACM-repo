@@ -19,10 +19,12 @@ mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 
 ll tt=1;
 
-const ll MAXN = 1e6+1;
+
 
 ll n;
-ll mob[MAXN+1], pr[MAXN+1], a[MAXN+1], dp[MAXN+1];
+
+const ll MAXN = 1e6+1;
+ll mob[MAXN+1], pr[MAXN+1];
 
 void init() {
 	bool np[MAXN+1] = {};		//not_prime 数组
