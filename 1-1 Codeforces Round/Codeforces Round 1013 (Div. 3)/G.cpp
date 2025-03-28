@@ -49,6 +49,8 @@ void solve(){
 		}
 		if(v[s]){
 			cout<<i<<endl;
+			OOO
+			cout<<(k-i)<<endl;
 			return;
 		}
 	}
