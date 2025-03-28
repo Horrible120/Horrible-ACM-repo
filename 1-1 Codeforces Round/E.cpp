@@ -20,10 +20,11 @@ mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 ll tt=1;
 
 void solve(){
-	ll n;
-	cin>>n;
+	ll n,q,f=0;
+	cin>>n>>q;
 	v2ct<ll> eg(n+1,vector<ll>());
-	vector<ll> col(n+1,0),v(n+1,0),fa(n+1,0),vis(n+1,0);
+	vector<ll> col(n+1,0),v(n+1,0),fa(n+1,0),vis(n+1,0),Bson(n+1,0);
+	set<ll> c2,c3;
 	for(ll i=1;i<=n;i++)
 		cin>>v[i];
 	for(ll i=1;i<=n-1;i++){
@@ -44,16 +45,60 @@ void solve(){
 		}
 	};
 	
+	fa[1]=0;
 	DFS(1);
 	
-	ll bw=0,bb=0,ww=n,wb=0;
-	
 	auto shift=[&](ll u){
-		if(col[u]==0){	//白
-			if(u!=1)
+		ll fu=fa[u];
+		
+		if(col[u]==0){
+			Bson[fu]++;
+			if(Bson[fu]==2)
+				c2.insert(fu);
+			else if(Bson[fu]==3)
+				c2.erase(fu),c3.insert((fu));
+			f-=Bson[u];
+			if(col[fu]==0)
+				f++;
+			col[u]=1;
 		}
-	}
+		else{
+			Bson[fu]--;
+			if(Bson[fu]==2)
+				c3.erase(fu),
+				c2.insert(fu);
+			if(Bson[fu]==1)
+				c2.erase(fu);
+			f+=Bson[u];
+			if(col[fu]==0)
+				f--;
+			col[u]=0;
+		}
+	};
 	
+	for(ll i=1;i<=n;i++)
+		if(v[i])
+			shift(i);
+	
+	while(q--){
+		ll u;
+		cin>>u;
+		shift(u);
+//		OOO
+		if(c3.size()==0){
+			if(c2.size()==1&&f==1&&col[fa[*c2.begin()]]==0){
+				cout<<"YES"<<endl;
+			}
+			else if(c2.size()==0&&f==1){
+				cout<<"YES"<<endl;
+			}
+			else{
+				cout<<"NO"<<endl;
+			}
+		}
+		else
+			cout<<"NO"<<endl;
+	}
 }
 
 int main() {
