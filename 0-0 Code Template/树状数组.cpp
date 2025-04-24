@@ -31,11 +31,11 @@ public:
 	
 	ll lb(ll x) {return x&-x;}	//求 lowbit
 	
-	T query_Prefsum(ll x){	//求前缀和
+	T query_Prefsum(ll pos){	//求前缀和
 		T res=0;
-		while(x){
-			res+=val[x];
-			x-=lb(x);
+		while(pos){
+			res+=val[pos];
+			pos-=lb(pos);
 		}
 		return res;
 	}

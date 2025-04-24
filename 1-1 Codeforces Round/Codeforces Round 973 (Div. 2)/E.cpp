@@ -1,48 +1,79 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
+#include <bits/extc++.h>
+#define OOO cout<<">>>>";cout.flush();	//调试标识
+#define H_test(x) println("---> {} <---",x);	//调试输出
+
 using namespace std;
+using namespace __gnu_pbds;
 
-int t,n;
-int a[100010];
-int ans,g;
+typedef long long ll;
+typedef uint64_t ull;
+using pll = pair<ll,ll>;
+template <typename T> using v2ct = vector<vector<T>>;
+template <typename T> using v3ct = vector<vector<vector<T>>>;
 
-int gcd(int a,int b)
-{
-	int d=1;
-	int c=0;
-	while(d)
-	{
-		c=a/b;
-		d=a%b;
-		a=b;
-		b=d;
+template <typename T, typename Compare = std::less<T>>
+using oset = tree<T, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
+const ll INF = 4e18, Mod = 1e9+7;
+mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
+
+ll tt=1;
+
+void solve(){
+	ll n,ans=0,g=0,m=0;
+	cin>>n;
+	vector<ll> v(n+1,0),vis(n+1,0);
+	for(ll i=1;i<=n;i++){
+		cin>>v[i];
+		if(m==0||v[i]<v[m]){
+			m=i;
+		}
 	}
-	return a;
+	
+	ans+=v[m];
+	g=v[m];
+	vis[m]=1;
+	
+	ll cnt=1;
+	while(cnt<n){
+		ll tmpg=INF,tar=0;
+		for(ll i=1;i<=n;i++){
+			if(!vis[i]){
+				ll tmp=__gcd(v[i],g);
+				if(tmp<tmpg){
+					tmpg=tmp;
+					tar=i;
+				}
+			}
+		}
+		
+		if(tmpg<g){
+			ans+=tmpg;
+			vis[tar]=1;
+			g=tmpg;
+			cnt++;
+		}
+		else{
+			ans+=(n-cnt)*g;
+			break;
+		}
+	}
+//	OOO
+	cout<<ans<<endl;
+	
 }
 
-int main()
-{
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+int main() {
+	ios::sync_with_stdio( 0 );
+	cin.tie( 0 );
+	cout.tie( 0 );
 	
-	cin>>t;
+	cin >> tt;	//非多组测试数据时注释掉即可
 	
-	for(int i=1;i<=t;i++)
-	{
-		cin>>n;
-		for(int j=1;j<=n;j++)
-			cin>>a[j];
-		g=a[1];
-		ans=a[1];
-		for(int j=2;j<=n;j++)
-		{
-			g=gcd(g,a[j]);
-			ans+=g;
-		}
-		cout<<ans<<endl;
-	} 
+	while ( tt-- ) {
+		solve();
+	}
 	
+	cout.flush();
 	return 0;
 }

@@ -1,38 +1,54 @@
 #include <bits/extc++.h>
-#define OOO cout<<">>>>";	//调试标识
-#define CY cout<<"YES"<<endl;	//输出宏
-#define CN cout<<"NO"<<endl;	//输出宏
+#define OOO cout<<">>>>";cout.flush();	//调试标识
+#define H_test(x) println("---> {} <---",x);	//调试输出
 
 using namespace std;
 using namespace __gnu_pbds;
 
-mt19937_64 rnd( time( 0 ) );
 typedef long long ll;
 typedef uint64_t ull;
-template <typename T> using vct = vector<T>;
+using pll = pair<ll,ll>;
 template <typename T> using v2ct = vector<vector<T>>;
 template <typename T> using v3ct = vector<vector<vector<T>>>;
 
 template <typename T, typename Compare = std::less<T>>
 using oset = tree<T, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
 
-const ll INF = 1e18, Mod = 1e9+7;
+const ll INF = 4e18, Mod = 1e9+7;
+mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 
 ll tt=1;
 
-void solve(){
-	vector<ll> v(6);
-	cin>>v[1]>>v[2]>>v[4]>>v[5];
-	ll ans=0;
-	for(ll i=-200;i<=200;i++){
-		ll cnt=0;
-		if(v[1]+v[2]==i) cnt++;
-		if(v[2]+i==v[4]) cnt++;
-		if(i+v[4]==v[5]) cnt++;
-		ans=max(ans,cnt);
+void solve() {
+	int a, b, c, d;
+	std::cin >> a >> b >> c >> d;
+	int ans1 = 1;
+	if (b + a + b == c) {
+		++ ans1;
 	}
-//	OOO
-	cout<<ans<<endl;
+	
+	if (a + b + c == d) {
+		++ ans1;
+	}
+	
+	int ans2 = 1;
+	if (b + d - c == c) {
+		++ ans2;
+	}
+	
+	if (a + b == d - c) {
+		++ ans2;
+	}
+	
+	int ans3 = 1;
+	if (a + b == c - b) {
+		++ ans3;
+	}
+	if (c - b + c == d) {
+		++ ans3;
+	}
+	
+	std::cout << std::max({ans1, ans2, ans3}) << "\n";
 }
 
 int main() {
