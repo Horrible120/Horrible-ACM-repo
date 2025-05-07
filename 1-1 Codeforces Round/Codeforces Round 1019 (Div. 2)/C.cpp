@@ -31,20 +31,6 @@ void solve(){
 	
 	ll flag=1;
 	
-//	for(ll i=1;i<=n-2&&flag;i++){
-//		
-//		if(vis[i]>=(i+1)/2){
-//			for(ll j=i+1;j<=n-1;j++)
-//				if(vis[j]-vis[i]>=(j-i+1)/2||vis[n]-vis[j]>=(n-j+1)/2)
-//					flag=0;
-//		}
-//		else{
-//			for(ll j=i+1;j<=n-1;j++)
-//				if(vis[j]-vis[i]>=(j-i+1)/2&&vis[n]-vis[j]>=(n-j+1)/2)
-//					flag=0;
-//		}
-//	}
-	
 	ll aa=0,bb=0;
 	for(ll i=1;i<=n-2&&aa==0;i++)
 		if(vis[i]>=(i+1)/2)
@@ -54,29 +40,22 @@ void solve(){
 		if(vis[n]-vis[i-1]>=(n-i+2)/2)
 			bb=i;
 	
-//	cout<<">>> "<<aa<<' '<<bb<<endl;
 	
 	if(aa&&bb&&aa<bb-1){
 		cout<<"YES"<<endl;
 		return;
 	}
-//	10 7 12 16 3 15 5 11
-	if(aa&&aa<n-2&&vis[aa]==vis[aa+1]&&vis[aa+1]>=(aa+2)/2)
-		aa++;
-	if(bb&&bb>3&&vis[n]-vis[bb-1]==vis[n]-vis[bb-2]&&vis[n]-vis[bb-2]>=(n-bb+3)/2)
-		bb--;
+	if(aa&&aa<n-2&&vis[aa]==vis[aa+1]&&vis[aa+1]>=(aa+2)/2) aa++;
+	if(bb&&bb>3&&vis[n]-vis[bb-1]==vis[n]-vis[bb-2]&&vis[n]-vis[bb-2]>=(n-bb+3)/2) bb--;
 	
 	if(aa)
-	for(ll i=aa+1;i<=n-1&&flag;i++){
-		if(vis[i]-vis[aa]>=(i-aa+1)/2)
-			flag=0;
-	}
-	
+		for(ll i=aa+1;i<=n-1&&flag;i++)
+			if(vis[i]-vis[aa]>=(i-aa+1)/2)
+				flag=0;
 	if(bb)
-	for(ll i=bb-1;i>=2&&flag;i--){
-		if(vis[bb-1]-vis[i-1]>=(bb-i+1)/2)
-			flag=0;
-	}
+		for(ll i=bb-1;i>=2&&flag;i--)
+			if(vis[bb-1]-vis[i-1]>=(bb-i+1)/2)
+				flag=0;
 	
 	if(flag)
 		cout<<"NO"<<endl;
