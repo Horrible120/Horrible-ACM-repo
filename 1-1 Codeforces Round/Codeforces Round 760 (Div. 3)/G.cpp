@@ -71,18 +71,6 @@ void solve(){
 		if(siz[fx]<siz[fy])
 			swap(fx,fy);
 		
-//		while(sta[fy].size()){
-//			sta[fx].insert(*sta[fy].begin());
-//			sta[fy].erase(sta[fy].begin());
-//		}
-//		
-//		while(stb[fy].size()){
-//			stb[fx].insert(*stb[fy].begin());
-//			stb[fy].erase(stb[fy].begin());
-//		}
-		
-		
-		
 		for(auto it:sta[fy])
 			sta[fx].insert(it);
 		for(auto it:stb[fy])
