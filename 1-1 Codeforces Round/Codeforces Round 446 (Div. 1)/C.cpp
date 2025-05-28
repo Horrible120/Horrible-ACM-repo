@@ -40,14 +40,14 @@ void solve(){
 		eg[i]=Edge(u,v,w,i);
 	}
 	
-	auto gf=[&](vector<ll> &fa,ll &x)->ll{
+	auto gf1=[&](vector<ll> &fa,ll &x)->ll{
 		while(fa[x]!=x)
 			x=fa[x];
 		return x;
 	};
 	
 	auto dsu_merge=[&](vector<ll> &fa,vector<ll> &siz,vector<pair<ll&,ll>> &bac,ll x,ll y)->void{
-		ll fx=gf(fa,x),fy=gf(fa,y);
+		ll fx=gf1(fa,x),fy=gf1(fa,y);
 		if(fx==fy)
 			return;
 		if(siz[fx]<siz[fy])
@@ -72,8 +72,8 @@ void solve(){
 		for(ll i=1;i<=m;i++){
 			ll cur=i;
 			while(cur<=m&&eg[cur].w==eg[i].w){
-				eg[cur].tu=gf(fa,eg[cur].u);
-				eg[cur].tv=gf(fa,eg[cur].v);
+				eg[cur].tu=gf1(fa,eg[cur].u);
+				eg[cur].tv=gf1(fa,eg[cur].v);
 				cur++;
 			}
 			while(i<cur){
@@ -110,7 +110,7 @@ void solve(){
 			sort(egx.begin()+1,egx.end());
 			
 			for(ll i=1;i<=k;i++)
-				if(gf(fa,egx[i].tu)!=gf(fa,egx[i].tv))
+				if(gf1(fa,egx[i].tu)!=gf1(fa,egx[i].tv))
 					dsu_merge(fa,siz,bac,egx[i].tu,egx[i].tv);
 				else
 					flag=0;

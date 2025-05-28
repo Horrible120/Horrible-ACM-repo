@@ -18,6 +18,7 @@ const ll INF = 4e18, Mod = 1e9+7;
 
 ll tt=1;
 
+//权值线段树
 class H_Val_Segment_Tree{
 public:
 	class Node{	//节点信息类
@@ -30,7 +31,7 @@ public:
 		}	
 	};
 	
-	ll low,top,tot;
+	ll low,top,tot;	//值域上下界 当前节点总数
 	vector<Node> node;
 	
 	H_Val_Segment_Tree(ll _sz,ll _low,ll _top){	//初始化
@@ -45,7 +46,7 @@ public:
 		cur.siz=(cur.lch?node[cur.lch].siz:0)+(cur.rch?node[cur.rch].siz:0);
 	}
 	
-	void add_vals(ll &rt,ll x,ll key){	//向以 rt 号节点为根的树内一次 x 个值 key
+	void add_vals(ll &rt,ll x,ll key){	//向以 rt 号节点为根的树内一次插入 x 个值 key
 		_add_vals(rt,low,top,x,key);
 	}
 	
