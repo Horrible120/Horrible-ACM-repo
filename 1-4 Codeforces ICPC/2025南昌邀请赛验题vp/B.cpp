@@ -48,6 +48,7 @@ void solve(){
 		}
 	};
 	
+	dep[1]=1;
 	fa[1][0]=1;
 	DFS(DFS,1);
 	
