@@ -25,10 +25,11 @@ ll n;
 
 const ll MAXN = 1e6+1;
 ll mob[MAXN+1], pr[MAXN+1];
+vector<ll> prm;				//素数序列
 
 void init() {
 	bool np[MAXN+1] = {};		//not_prime 数组
-	vector<ll> prm;				//素数序列
+	
 	
 	for (ll i = 1; i <= MAXN; i++)
 		mob[i] = 1;				//初始化 莫比乌斯函数 数组
