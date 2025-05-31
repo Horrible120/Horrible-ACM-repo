@@ -34,15 +34,6 @@ void solve(){
 	cin>>s>>t;
 	cin>>k;
 	
-	ll len=max(s.size(),t.size())+2;
-	
-	vector<ll> vs(len+5,0),vt(len+5,0);
-	
-	for(ll i=0;i<s.size();i++)
-		vs[i]=s[i]-'0';
-	for(ll i=0;i<t.size();i++)
-		vt[i]=t[i]-'0';
-	
 	auto calc=[](ll u)->ll{
 		if(u==1)
 			return 1ll;
@@ -58,12 +49,13 @@ void solve(){
 				c=c*c%Mod;
 			}
 			
-			res=(tmp*(4+4*inv(3))%Mod-4*inv(3)+Mod)%Mod;
+			res=(tmp*(4+4*inv(3))%Mod-4*inv(3)+Mod*10)%Mod;
 			return res;
 		}
 	};
 	
 	if(s==t&&k==1){
+//		OOO
 		cout<<0<<endl;
 		return;
 	}
@@ -78,19 +70,66 @@ void solve(){
 			k/=2;
 			c=c*c%Mod;
 		}
-		
-		ans=(tmp*(4+4*inv(3))%Mod-4*inv(3)+Mod)%Mod;
+		ans=(tmp*(4+4*inv(3))%Mod-4*inv(3)+Mod*10)%Mod;
+//		OOO
 		cout<<ans<<endl;
 	}
 	else{
-		ll n=(max(s.size(),t.size())-1)/2;
+		ll len=max(s.size(),t.size())+2;
+		ll n=len/2,c=1,ans=0;
 		
-		ll c=1,ans=0;
+		v2ct<ll> bk(4);
+		bk[0]={0,1,3,2};
+		bk[1]={1,0,2,3};
+		bk[2]={3,2,0,1};
+		bk[3]={2,3,1,0};
+		
+		vector<ll> vs(len+5,0),vt(len+5,0);
+		
+		for(ll i=0;i<s.size();i++)
+			vs[s.size()-i-1]=s[i]-'0';
+		for(ll i=0;i<t.size();i++)
+			vt[t.size()-i-1]=t[i]-'0';
+		
+//		for(ll i=1;i<=len;i++)
+//			cout<<vs[i]<<' ';
+//		cout<<endl;
+//		for(ll i=1;i<=len;i++)
+//			cout<<vt[i]<<' ';
+//		cout<<endl;
+		
+		
 		
 		for(ll i=0;i<=n;i++){
+			ll tmp1=vs[i*2]+vs[i*2+1]*2;
+			ll tmp2=vt[i*2]+vt[i*2+1]*2;
 			
-			c=(c*4+4)%Mod;
+			ans=(ans+bk[tmp1][tmp2]*c)%Mod;
+			
+			c=(c*4+1)%Mod;
 		}
+		
+		if(k>1){
+			ll flag=1;
+			if(k-2>n){
+				cout<<-1<<endl;
+				return;
+			}
+			
+			ll g=0;
+			for(ll i=0;i<=k-2;i++){
+				ll tmp1=vs[i*2]+vs[i*2+1]*2;
+				ll tmp2=vt[i*2]+vt[i*2+1]*2;
+				if(tmp1!=tmp2){
+					cout<<-1<<endl;
+					return;
+				}
+				g=(g*4+4)%Mod;
+			}
+			ans=(ans+g)%Mod;
+		}
+//		OOO
+		cout<<ans<<endl;
 	}
 	
 }
