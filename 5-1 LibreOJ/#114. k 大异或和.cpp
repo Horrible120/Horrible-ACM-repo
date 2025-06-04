@@ -1,0 +1,132 @@
+#include <bits/extc++.h>
+#define OOO cout<<">>>>";cout.flush();	//调试标识
+#define H_test(x) println("---> {} <---",x);	//调试输出
+
+using namespace std;
+using namespace __gnu_pbds;
+
+//#pragma GCC optimize("Ofast")
+//#pragma GCC optimize("inline")
+
+typedef long long ll;
+typedef uint64_t ull;
+using pll = pair<ll,ll>;
+template <typename T> using v2ct = vector<vector<T>>;
+template <typename T> using v3ct = vector<vector<vector<T>>>;
+
+template <typename T, typename Compare = std::less<T>>
+using oset = tree<T, null_type, Compare, rb_tree_tag, tree_order_statistics_node_update>;
+
+const ll INF = 4e18, Mod = 1e9+7;
+mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
+
+ll tt=1;
+
+class H_basis{
+public:
+	ll dgt,zero_flag;
+	vector<ll> d,arr;
+	H_basis(ll _dgt){
+		dgt=_dgt;
+		zero_flag=0;
+		d.assign(dgt+1,0);
+	}
+	
+	void insert(ll val){
+		for(ll i=dgt;i>=0;i--){
+			if(!(val&(1ll<<i))){
+				continue;
+			}
+			if(!d[i]){
+				d[i]=val;
+				break;
+			}
+			else{
+				val^=d[i];
+			}
+		}
+		if(val==0)
+			zero_flag=1;
+	}
+	
+	ll get_max(){
+		ll res=0;
+		for(ll i=dgt;i>=0;i--){
+			if((res^d[i])>res){
+				res^=d[i];
+			}
+		}
+		return res;
+	}
+	
+	void rebuild(){
+		arr.resize(0);
+		for(ll i=0;i<=dgt;i++){
+			if(!d[i])
+				continue;
+			else
+				for(ll j=i-1;j>=0;j--)
+					if((d[i]>>j)&1)
+						d[i]^=d[j];
+			if(d[i])
+				arr.emplace_back(d[i]);
+		}
+	}
+	
+	ll get_kth_min(ll k){
+		if(zero_flag)
+			k--;
+		
+		if(k>=(1ll<<(ll)arr.size()))
+			return -1;
+		
+		ll res=0;
+		for(ll i=arr.size()-1;i>=0;i--)
+			if((k>>i)&1)
+				res^=arr[i];
+		return res;
+	}
+	
+};
+
+void solve(){
+	ll n,m;
+	cin>>n;
+	vector<ll> v(n+1,0);
+	
+	H_basis bas(60);
+	
+	for(ll i=1;i<=n;i++){
+		cin>>v[i];
+		bas.insert(v[i]);
+	}
+	
+//	OOO
+//	cout<<bas.get_max()<<endl;
+	
+	bas.rebuild();
+	
+	cin>>m;
+	while(m--){
+		ll x;
+		cin>>x;
+//		OOO
+		cout<<bas.get_kth_min(x)<<endl;
+	}
+	
+}
+
+int main() {
+	ios::sync_with_stdio( 0 );
+	cin.tie( 0 );
+	cout.tie( 0 );
+	
+//	cin >> tt;	//非多组测试数据时注释掉即可
+	
+	while ( tt-- ) {
+		solve();
+	}
+	
+	cout.flush();
+	return 0;
+}
