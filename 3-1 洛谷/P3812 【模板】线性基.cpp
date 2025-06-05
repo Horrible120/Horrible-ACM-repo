@@ -24,10 +24,11 @@ ll tt=1;
 
 class H_basis{
 public:
-	ll dgt;
+	ll dgt,zero_flag;
 	vector<ll> d;
 	H_basis(ll _dgt){
 		dgt=_dgt;
+		zero_flag=0;
 		d.assign(dgt+1,0);
 	}
 	
@@ -44,6 +45,8 @@ public:
 				val^=d[i];
 			}
 		}
+		if(val==0)
+			zero_flag=1;
 	}
 	
 	ll get_max(){
@@ -53,6 +56,27 @@ public:
 				res^=d[i];
 			}
 		}
+		return res;
+	}
+	
+	void rebuild(){
+		for(ll i=0;i<=dgt;i++){
+			if(!d[i])
+				continue;
+			else
+				for(ll j=i-1;j>=0;j--)
+					if((d[i]<<j)&1)
+						d[i]^=d[j];
+		}
+	}
+	
+	ll get_kth_min(ll k){
+		if(zero_flag)
+			k--;
+		ll res=0;
+		for(ll i=dgt;i>=0;i--)
+			if((k>>i)&1)
+				res^=d[i];
 		return res;
 	}
 	
