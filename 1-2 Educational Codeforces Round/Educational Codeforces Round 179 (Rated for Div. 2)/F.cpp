@@ -23,11 +23,47 @@ mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 ll tt=1;
 
 void solve(){
-	ll p,s;
+	ll s,p;
 	cin>>p>>s;
 	
+	for(ll i=1;i<=50;i++){
+		ll tmp=(i+1)*2;
+		if(tmp*s==i*p){
+			cout<<i<<endl;
+			for(ll j=1;j<=i;j++)
+				cout<<1<<' '<<j<<endl;
+			return;
+		}
+	}
 	
+	ll g=__gcd(s,p);
+	s/=g;
+	p/=g;
 	
+	if(s>=(p+1)/2-1){
+		p*=16*s;
+		s*=16*s;
+		cout<<s<<endl;
+		
+		ll n=p/4;
+		
+		for(ll i=1;i<=n;i++)
+			cout<<1<<' '<<i<<endl;
+		for(ll i=2;i<=n;i++)
+			cout<<i<<' '<<1<<endl;
+		
+		s-=n*2-1;
+		
+		for(ll i=2;i<=n&&s>0;i++){
+			for(ll j=2;j<=n&&s>0;j++){
+				cout<<j<<' '<<i<<endl;
+				s--;
+			}
+		}
+	}
+	else{
+		cout<<-1<<endl;
+	}
 }
 
 int main() {
