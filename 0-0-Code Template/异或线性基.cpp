@@ -55,7 +55,7 @@ public:
 	
 	bool check(ll val){
 		for(ll i=dg;i>=0;i--){
-			if((val<<i)&1){
+			if((val>>i)&1){
 				if(!d[i]){
 					return false;
 				}

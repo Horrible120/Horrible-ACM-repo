@@ -24,7 +24,41 @@ mt19937_64 rnd( (uintptr_t)(char*)(&INF)+time(0) );
 ll tt=1;
 
 void solve(){
+	ll n;
+	cin>>n;
+	vector<ll> v(n+1,0),ans(n+1,0);
+	ll top=0,tmp=0;
 	
+	multiset<ll> s1,s2;
+	
+	for(ll i=1;i<=n;i++){
+		cin>>v[i];
+		s2.insert(v[i]);
+	}
+	
+	while(s2.size()&&s2.lower_bound(top+1)!=s2.end()){
+		auto a=s2.lower_bound(top+1);
+		top++;
+		tmp+=(*a)-top;
+		s1.insert(*a);
+		s2.erase(a);
+	}
+	
+	for(ll i=n;i>=1;i--){
+		ans[i]=tmp;
+		auto it=s2.lower_bound(v[i]);
+		if(it==s2.end()){
+			tmp=tmp-v[i]+(top--);
+		}else{
+			tmp=tmp-v[i]+(*it);
+			s2.erase(it);
+		}
+	}
+	
+	for(ll i=1;i<=n;i++){
+		cout<<ans[i]<<" \n"[i==n];
+	}
+	cout.flush();
 }
 
 int main() {

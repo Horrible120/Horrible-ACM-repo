@@ -40,6 +40,8 @@ int main() {
 	
 	cin >> tt;	//非多组测试数据时注释掉即可
 	
+	// cout<<inv(2)<<endl;
+	
 	while ( tt-- ) {
 		solve();
 	}

@@ -106,6 +106,7 @@ public:
 			for(ll i=1;i<=n;i++) node[i].cur=node[i].fir;
 			max_flow+=DFS(s,INF,t);
 		}
+		
 		return max_flow;
 	}
 	
@@ -114,15 +115,43 @@ private:
 };
 
 void solve(){
-	ll n,m,s,t;
-	cin>>n>>m>>s>>t;
-	H_Flow flow(n,m);
-	for(ll i=1;i<=m;i++){
-		ll u,v,f;
-		cin>>u>>v>>f;
-		flow.add_edge(u,v,f);
+//	ll n,m,s,t;
+//	cin>>n>>m>>s>>t;
+//	H_Flow flow(n,m);
+//	for(ll i=1;i<=m;i++){
+//		ll u,v,f;
+//		cin>>u>>v>>f;
+//		flow.add_edge(u,v,f);
+//	}
+//	cout<<flow.Dinic(s,t)<<endl;
+	
+	ll n,m,e;
+	cin>>n>>m>>e;
+	H_Flow flow(n+m+2,e+n+m);
+	ll s=n+m+1,t=n+m+2;
+	
+	for(ll i=1;i<=n;i++){
+		flow.add_edge(s,i,1);
 	}
+	
+	for(ll i=1;i<=m;i++){
+		flow.add_edge(n+i,t,1);
+	}
+	
+	for(ll i=1;i<=e;i++){
+		ll u,v;
+		cin>>u>>v;
+		flow.add_edge(u,n+v,1);
+	}
+	
 	cout<<flow.Dinic(s,t)<<endl;
+	
+//	ll cnt=0;
+//	for(H_Flow::Edge v:flow.edge){
+//		if(v.u<=n&&v.v>=n&&v.flw>0){
+//			cout<<"Match [ "<<++cnt<<" ]: "<<v.u<<' '<<v.v-n<<endl;
+//		}
+//	}
 }
 
 int main() {
