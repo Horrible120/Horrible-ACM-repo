@@ -36,8 +36,7 @@ void solve(){
 	vector<ll> fa(n+1),ord{1};
 	for(ll i=0;i<n;i++){
 		ll u=ord[i];
-		for(ll j=0;j<(ll)eg[u].size();j++){
-			ll v=eg[u][j];
+		for(ll v:eg[u]){
 			if(v==fa[u])
 				continue;
 			fa[v]=u;
@@ -45,27 +44,28 @@ void solve(){
 		}
 	}
 
-	vector<array<ll,3>> tr(1);
+	ll tot=0;
+	vector<array<ll,3>> tr(20*n+1);
 	vector<ll> rt(n+1);
 	vector<vector<ll>> bag(n+1);
 	auto calc=[&](ll id,ll x)->ll{
 		return b[id]*x+dp[id];
 	};
-	auto add=[&](this auto &&self,ll p,ll l,ll r,ll id)->ll{
+	auto add=[&](this auto &&self,ll &p,ll l,ll r,ll id)->void{
 		if(!p){
-			tr.emplace_back(array<ll,3>{0,0,id});
-			return (ll)tr.size()-1;
+			p=++tot;
+			tr[p]={0,0,id};
+			return;
 		}
 		ll mid=l+(r-l)/2;
 		if(calc(id,mid)<calc(tr[p][2],mid))
 			swap(id,tr[p][2]);
 		if(l==r)
-			return p;
+			return;
 		if(calc(id,l)<calc(tr[p][2],l))
-			tr[p][0]=self(tr[p][0],l,mid,id);
+			self(tr[p][0],l,mid,id);
 		else if(calc(id,r)<calc(tr[p][2],r))
-			tr[p][1]=self(tr[p][1],mid+1,r,id);
-		return p;
+			self(tr[p][1],mid+1,r,id);
 	};
 	auto qry=[&](this auto &&self,ll p,ll l,ll r,ll x)->ll{
 		if(!p)
@@ -81,28 +81,25 @@ void solve(){
 
 	for(ll i=n-1;i>=0;i--){
 		ll u=ord[i],son=0;
-		for(ll j=0;j<(ll)eg[u].size();j++){
-			ll v=eg[u][j];
+		for(ll v:eg[u]){
 			if(v!=fa[u]&&bag[v].size()>bag[son].size())
 				son=v;
 		}
 		if(son){
 			rt[u]=rt[son];
 			bag[u].swap(bag[son]);
-			for(ll j=0;j<(ll)eg[u].size();j++){
-				ll v=eg[u][j];
+			for(ll v:eg[u]){
 				if(v==fa[u]||v==son)
 					continue;
-				for(ll k=0;k<(ll)bag[v].size();k++){
-					ll id=bag[v][k];
-					rt[u]=add(rt[u],-100000,100000,id);
+				for(ll id:bag[v]){
+					add(rt[u],-100000,100000,id);
 					bag[u].emplace_back(id);
 				}
 				vector<ll>().swap(bag[v]);
 			}
 			dp[u]=qry(rt[u],-100000,100000,a[u]);
 		}
-		rt[u]=add(rt[u],-100000,100000,u);
+		add(rt[u],-100000,100000,u);
 		bag[u].emplace_back(u);
 	}
 

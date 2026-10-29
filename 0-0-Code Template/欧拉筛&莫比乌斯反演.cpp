@@ -21,20 +21,25 @@ ll tt = 1;
 
 /***********************************************/
 
-const ll MAXN = 5e6;
-vector<ll> minp, prm;
-void sieve() {
-	minp.resize ( MAXN );
+vector<ll> minp,prm,mu;
+void sieve(ll n){
+	minp.assign(n+1,0);
+	mu.assign(n+1,0);
+	prm.clear();
+	if(n>=1)
+		mu[1]=1;
 
-	for ( ll i = 2; i <= MAXN; i++ ) {
-		if ( !minp[i] ) {
-			minp[i] = i;
-			prm.emplace_back ( i );
+	for(ll i=2;i<=n;i++){
+		if(!minp[i]){
+			minp[i]=i;
+			prm.emplace_back(i);
+			mu[i]=-1;
 		}
-		for ( auto j : prm ) {
-			if ( j > minp[i] || i * j > MAXN )
+		for(ll p:prm){
+			if(p>minp[i]||i*p>n)
 				break;
-			minp[i * j] = j;
+			minp[i*p]=p;
+			mu[i*p]=(p==minp[i]?0:-mu[i]);
 		}
 	}
 }
@@ -50,7 +55,6 @@ int main() {
 	cin.tie ( 0 );
 	cout.tie ( 0 );
 
-	sieve();
 	
 	//cin >> tt;	//非多组测试数据时注释掉即可
 
